@@ -2,9 +2,10 @@ package duhan.practice.domain;
 
 import duhan.practice.listener.UserEntityListener;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @EntityListeners(UserEntityListener.class)
-//public class User implements Auditable{
+@RequiredArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -30,4 +31,25 @@ public class User extends BaseEntity {
 
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
+
+    @OneToMany
+    @ToString.Exclude
+    private List<UserHistory> userHistories = new ArrayList<>();
+
+    @OneToMany
+    @ToString.Exclude
+    private List<Review> reviews = new ArrayList<>();
+
+    // 연관관계 메소드
+    public void addReview(Review review) {
+        List<Review> reviews = getReviews();
+        reviews.add(review);
+    }
+
+    public List<Review> getReviews() {
+        if (reviews == null) {
+            reviews = new ArrayList<>();
+        }
+        return reviews;
+    }
 }

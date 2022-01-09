@@ -5,20 +5,22 @@ import duhan.practice.domain.UserHistory;
 import duhan.practice.repository.UserHistoryRepository;
 import duhan.practice.support.BeanUtils;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 
 public class UserEntityListener {
 
-    @PrePersist
-    @PreUpdate
+    @PostPersist
+    @PostUpdate
     public void prePersistAndPreUpdate(Object o) {
         UserHistoryRepository userHistoryRepository = BeanUtils.getBean(UserHistoryRepository.class);
+
         User user = (User) o;
+
         UserHistory userHistory = new UserHistory();
-        userHistory.setUserId(user.getId());
         userHistory.setName(user.getName());
         userHistory.setEmail(user.getEmail());
+        userHistory.setUser(user);
 
         userHistoryRepository.save(userHistory);
     }

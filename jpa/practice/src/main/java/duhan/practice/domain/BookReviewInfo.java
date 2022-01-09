@@ -12,17 +12,16 @@ import javax.persistence.*;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserHistory extends BaseEntity {
+public class BookReviewInfo extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @OneToOne(optional = false)
+    private Book book;
 
-    private String email;
+    private float averageReviewSCore;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private int reviewCount;
 }
