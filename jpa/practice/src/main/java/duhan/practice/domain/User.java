@@ -33,19 +33,16 @@ public class User extends BaseEntity {
     private Gender gender;
 
     @OneToMany
+    @JoinColumn(name = "user_id")
     @ToString.Exclude
     private List<UserHistory> userHistories = new ArrayList<>();
 
     @OneToMany
+    @JoinColumn(name = "user_id")
     @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
 
     // 연관관계 메소드
-    public void addReview(Review review) {
-        List<Review> reviews = getReviews();
-        reviews.add(review);
-    }
-
     public List<Review> getReviews() {
         if (reviews == null) {
             reviews = new ArrayList<>();

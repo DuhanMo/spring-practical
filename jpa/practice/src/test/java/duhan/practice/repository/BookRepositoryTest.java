@@ -4,12 +4,14 @@ import duhan.practice.domain.Book;
 import duhan.practice.domain.Publisher;
 import duhan.practice.domain.Review;
 import duhan.practice.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class BookRepositoryTest {
 
     @Autowired
@@ -24,11 +26,15 @@ class BookRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    @Transactional
-    void bookRelationTest() {
+    @BeforeEach
+    void initDummies() {
         givenBookAndReview();
+    }
+    @Test
+    void bookRelationTest() {
+        userRepository.findAll().forEach(System.out::println);
         User user = userRepository.findByEmail("dudu@test.com");
+        userRepository.save(user);
         System.out.println("===============");
         System.out.println(user);
         System.out.println("user = " + user);
@@ -36,12 +42,6 @@ class BookRepositoryTest {
         System.out.println("Book : " + user.getReviews().get(0).getBook());
         System.out.println("Publisher : " + user.getReviews().get(0).getBook().getPublisher());
         System.out.println("===============");
-//        System.out.println(reviewRepository.findAll().get(0).getUser());
-
-//        bookRepository.findAll().forEach(System.out::println);
-//        publisherRepository.findAll().forEach(System.out::println);
-//        reviewRepository.findAll().forEach(System.out::println);
-//        userRepository.findAll().forEach(System.out::println);
     }
 
     private void givenBookAndReview() {
@@ -54,8 +54,7 @@ class BookRepositoryTest {
                 .email("dudu@test.com")
                 .name("dudu")
                 .build();
-        userRepository.save(user);
-        return userRepository.findByEmail("dudu@test.com");
+        return userRepository.save(user);
     }
 
     private Book givenBook(Publisher publisher) {
@@ -73,7 +72,6 @@ class BookRepositoryTest {
         review.setUser(user);
         review.setBook(book);
         reviewRepository.save(review);
-//        user.addReview(review);
     }
 
     private Publisher givenPublisher() {
