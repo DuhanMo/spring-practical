@@ -6,12 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 public class EntityManagerTest {
 
     @Autowired
@@ -35,7 +32,8 @@ public class EntityManagerTest {
         System.out.println("======================");
         user.setEmail("dudududududu@test.com");
         userRepository.save(user);
-        System.out.println("user = " + user);
+        System.out.println("user = " + userRepository.findById(1L).get());
+        System.out.println(userRepository.findAll());
         // @Transactional 이 없다면 2번의 update쿼리가 나간다
         // @Transactional 이 있다면 update쿼리가 날라가지 않고 영속성 컨텍스트의 데이터만 그대로 출력하고 롤백된다.
         // @Transactional 이 있다면 flush를 마지막에 했을때 update쿼리가 1번 날라간다.
