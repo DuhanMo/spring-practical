@@ -29,11 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web
-                .ignoring()
-                .requestMatchers(
-                        PathRequest.toH2Console(),
-                        PathRequest.toStaticResources().atCommonLocations()
+        web.ignoring()
+                .antMatchers(
+                        "/h2-console/**",
+                        "/favicon.ico",
+                        "/error",
+                        "/swagger-ui/**"
                 );
     }
 
